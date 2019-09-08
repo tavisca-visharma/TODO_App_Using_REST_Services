@@ -1,4 +1,4 @@
-package com.tavisca.trainings.services;
+package com.tavisca.trainings.models;
 
 public class Todo {
 	
