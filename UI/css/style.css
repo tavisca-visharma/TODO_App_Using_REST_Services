@@ -1,0 +1,231 @@
+body {
+    background-color: pink;
+    background-image: url("../images/back.jpg");
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: Georgia;
+}
+
+ul {
+    list-style-type: none;
+}
+
+
+/* Main Container */
+
+#container {
+    margin-left: 82px;
+    margin-top: 34px;
+    align-self: center;
+    background-color: white;
+    height: 600px;
+    width: 1200px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+/* Header section */
+
+header {
+    padding: 20px;
+    background-color: green;
+    color: whitesmoke;
+    text-align: center;
+    height: 7%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+/* nav-and-main section */
+
+#nav-and-main {
+    height: 77%;
+    width: 100%;
+}
+
+
+/* nav section */
+
+nav {
+    padding-left: 30px;
+    height: 96%;
+    width: 22.5%;
+    float: left;
+    margin: 10px;
+    margin-right: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+li {
+    text-align: center;
+    width: 31%;
+    height: 10%;
+    border: 1px solid black;
+    margin-top: 5px;
+    padding: 0px 77px;
+    background-color: burlywood;
+    padding-top: 21px;
+}
+
+li:hover {
+    color: white;
+    background-color: brown;
+    cursor: pointer;
+    font-size: 20;
+}
+
+nav h3 {
+    padding: 20px;
+    padding-right: 41px;
+    text-align: center;
+}
+
+.nav-tabs {
+    display: none;
+}
+
+main#home {
+    display: inline;
+}
+
+
+/* main section */
+
+main {
+    padding-left: 30px;
+    height: 96%;
+    width: 70%;
+    float: left;
+    margin: 10px;
+    margin-left: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+main h3 {
+    margin-top: 10px;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+main #todo-input {
+    width: 20%;
+    height: 30px;
+}
+
+main .todo-btn {
+    margin-left: 5px;
+    width: 10%;
+    height: 30px;
+    border-radius: 8px;
+}
+
+main .todo-btn:hover {
+    cursor: pointer;
+    background-color: brown;
+    color: white;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#div-table {
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 331px;
+}
+
+table {
+    width: 95%;
+    max-height: 77%;
+    table-layout: fixed;
+}
+
+th,
+td {
+    padding-left: 0;
+    text-align: center;
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table textarea {
+    text-align: center;
+    border: 0;
+    outline: none;
+    font-size: 16;
+    background: transparent;
+    resize: none;
+    width: 95%;
+}
+
+table input:hover {
+    cursor: unset;
+}
+
+button {
+    border-radius: 8px;
+    margin-left: 5px;
+    width: 80;
+    height: 30px;
+}
+
+button:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#del-btn {
+    border: 1px solid red;
+    background-color: white;
+    color: red;
+}
+
+button#del-btn:hover {
+    border: 1px solid brown;
+    background-color: rgb(235, 51, 51);
+    color: white;
+    cursor: pointer;
+}
+
+button#edit-btn {
+    border: 1px solid goldenrod;
+    background-color: white;
+}
+
+button#edit-btn:hover {
+    border: 1px solid brown;
+    background-color: goldenrod;
+    color: white;
+    cursor: pointer;
+}
+
+button#save-btn {
+    border: 1px solid green;
+    background-color: white;
+}
+
+button#save-btn:hover {
+    border: 1px solid brown;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}
+
+.images:hover {
+    cursor: pointer;
+}
+
+
+/* Footer section */
+
+footer {
+    padding: 20px;
+    background-color: brown;
+    color: white;
+    text-align: center;
+    height: 3%;
+}

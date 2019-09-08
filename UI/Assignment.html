@@ -1,0 +1,77 @@
+<html>
+
+<head>
+    <title>Project</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <div id="container">
+        <header>
+            <h1>TODO Manager</h1>
+        </header>
+        <div id="nav-and-main">
+            <nav>
+                <h3>Navigation</h3>
+                <ul>
+                    <li onclick="setView(this)">Home</li>
+                    <li onclick="setView(this)">Users</li>
+                    <li onclick="setView(this)">Department</li>
+                    <li onclick="setView(this)">Batch</li>
+                </ul>
+            </nav>
+
+            <main id="home" class="nav-tabs">
+                <h3>TODO List</h3>
+                <input type="text" id="todo-input" list="todo-list-suggestions" placeholder="Enter Your TODO" />
+                <input type="button" id="todo-add" class="todo-btn" value="Add Item" />
+                <input type="button" id="todo-search" class="todo-btn" value="Search" />
+                <datalist id="todo-list-suggestions">
+                    <!-- <option value="Study"></option>
+                    <option value="Run"></option>
+                    <option value="Office"></option>
+                    <option value="Eat"></option>
+                    <option value="Pack"></option> -->
+                </datalist>
+                <br />
+                <br />
+                <div id="div-table">
+                    <table id="todo-list">
+                        <col width="100">
+                        <col width="400">
+                        <col width="100">
+                        <col width="100">
+                        <!-- code will be dynamically implemented using js -->
+                    </table>
+                </div>
+
+            </main>
+            <main id="users" class="nav-tabs">
+                <h1>
+                    <center>Users</center>
+                </h1>
+                Welcome to the users page...
+            </main>
+            <main id="department" class="nav-tabs">
+                <h1>
+                    <center>Department</center>
+                </h1>
+                Welcome to the Department page...
+            </main>
+            <main id="batch" class="nav-tabs">
+                <h1>
+                    <center>Batch</center>
+                </h1>
+                Our batch is amazing...
+            </main>
+        </div>
+        <footer>
+            Copyright &copy; Vishal Sharma
+        </footer>
+    </div>
+</body>
+
+</html>
+
+<!-- Scripts -->
+<script type="text/javascript" src="js/script.js"></script>
