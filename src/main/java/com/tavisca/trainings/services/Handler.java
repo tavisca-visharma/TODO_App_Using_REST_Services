@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.tavisca.trainings.models.Suggestion;
 import com.tavisca.trainings.models.Todo;
 
@@ -11,6 +14,7 @@ public class Handler {
 
 	List<Todo> todoList;
 	List<Suggestion> suggestions;
+	JSONObject jsonObject = null;
 
 	public Handler() {
 		todoList = new ArrayList<Todo>();
@@ -19,14 +23,10 @@ public class Handler {
 		addInitialTodos();
 	}
 
-	public void addSuggention(String content) {
-		suggestions.add(new Suggestion(content));
-	}
-
 	public void addInitialTodos() {
-		todoList.add(new Todo(new Date().toString(), "Hello", false));
-		todoList.add(new Todo(new Date().toString(), "Vishal", false));
-		todoList.add(new Todo(new Date().toString(), "Sharma", true));
+		todoList.add(new Todo(new Date().toString(), "Go for Lunch @ 1:30 PM", false));
+		todoList.add(new Todo(new Date().toString(), "Go for Dinner @ 7:30 PM", false));
+		todoList.add(new Todo(new Date().toString(), "Complete TODO APP using Rest Api", true));
 	}
 
 	public void addInitialSuggestions() {
@@ -35,12 +35,16 @@ public class Handler {
 		suggestions.add(new Suggestion("Third Suggestion"));
 	}
 
-	public String getAllTodo() {
-		return new ObjectToJsonStringConverter().toJson(todoList);
+	public void addSuggention(String content) {
+		suggestions.add(new Suggestion(content));
 	}
 
 	public String getAllSuggestions() {
 		return new ObjectToJsonStringConverter().toJson(suggestions);
+	}
+
+	public String getAllTodo() {
+		return new ObjectToJsonStringConverter().toJson(todoList);
 	}
 
 	public void addTodo(String content) {
@@ -83,6 +87,49 @@ public class Handler {
 			}
 		}
 		return deletedTodo;
+	}
+
+	public String getUpdatedTodo(int todoId, String jsonTodo) {
+		String todoContent = null;
+		String todoCheckStatus = null;
+		try {
+			jsonObject = new JSONObject(jsonTodo);
+			todoContent = jsonObject.getString("content");
+			todoCheckStatus = jsonObject.getString("checked");
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return getUpdatedTodo(todoId, todoContent, todoCheckStatus);
+	}
+
+	public void addNewTodo(String jsonString) {
+		try {
+			jsonObject = new JSONObject(jsonString);
+
+			String todoContent = jsonObject.getString("content");
+			this.addTodo(todoContent);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void addNewSuggestion(String jsonString) {
+		try {
+			jsonObject = new JSONObject(jsonString);
+
+			this.addSuggention(jsonObject.getString("content"));
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public String getNewlyAddedSuggestion() {
+		return new ObjectToJsonStringConverter().toJson(suggestions.get(suggestions.size() - 1));
 	}
 
 }
