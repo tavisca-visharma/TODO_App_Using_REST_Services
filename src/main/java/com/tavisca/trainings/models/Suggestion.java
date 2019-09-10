@@ -1,6 +1,7 @@
 package com.tavisca.trainings.models;
 
 public class Suggestion {
+
 	private String content;
 
 	public Suggestion(String content) {

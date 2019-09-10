@@ -1,23 +1,30 @@
 package com.tavisca.trainings.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tavisca.trainings.services.Handler;
+import com.tavisca.trainings.models.Response;
+import com.tavisca.trainings.services.TodoService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@RequestMapping(path = "todoapi/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootController {
 
-	Handler handler = new Handler();
+	@Autowired
+	TodoService todoService;
 
 	@GetMapping
 	public String name() {
@@ -25,42 +32,39 @@ public class RootController {
 	}
 
 	@GetMapping("/suggestions")
-	public ResponseEntity<?> getSuggestions() {
-		return new ResponseEntity<>(handler.getAllSuggestions(), HttpStatus.OK);
+	public Response getSuggestions() {
+		return todoService.getAllSuggestions();
 	}
 
 	@GetMapping("/todo")
-	public ResponseEntity<?> getTodos() {
-		return new ResponseEntity<>(handler.getAllTodo(), HttpStatus.OK);
+	public Response getTodos() {
+		return todoService.getAllTodo();
 	}
 
 	@PostMapping(path = "/suggestions")
-	public ResponseEntity<?> addSuggestions(@RequestBody String jsonString) {
-		
-		handler.addNewSuggestion(jsonString);
-		return new ResponseEntity<>(handler.getNewlyAddedSuggestion(), HttpStatus.OK);
-
+	public Response addSuggestions(@Valid @RequestBody String jsonString) {
+		System.out.println(jsonString + "##");
+		return todoService.addNewSuggestion(jsonString);
 	}
 
 	@PostMapping(path = "/todo")
-	public ResponseEntity<?> addTodo(@RequestBody String jsonString) {
-
-		handler.addNewTodo(jsonString);
-		return new ResponseEntity<>(handler.getNewlyAddedTodo(), HttpStatus.OK);
-
+	public Response addTodo(@Valid @RequestBody String jsonString) {
+		return todoService.addNewTodo(jsonString);
 	}
 
 	@PutMapping("/todo/{id}")
-	public ResponseEntity<?> updateTodo(@PathVariable("id") int todoId, @RequestBody String jsonTodo) {
-
-		return new ResponseEntity<>(handler.getUpdatedTodo(todoId, jsonTodo), HttpStatus.OK);
-
+	public Response updateTodo(@PathVariable("id") int todoId, @Valid @RequestBody String jsonTodo) {
+		return todoService.getUpdatedTodo(todoId, jsonTodo);
 	}
 
 	@DeleteMapping("/todo/{id}")
-	public ResponseEntity<?> deleteTodo(@PathVariable("id") int todoId) {
-		return new ResponseEntity<>(handler.getDeletedTodo(todoId), HttpStatus.OK);
-
+	public Response deleteTodo(@PathVariable("id") int todoId) {
+		return todoService.getDeletedTodo(todoId);
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public Response errorResponse(Exception e) {
+		return todoService.getBadRequest();
 	}
 
 }

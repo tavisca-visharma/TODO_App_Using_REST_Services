@@ -42,13 +42,18 @@ function makeTodoListSuggetions() {
     // }
 
     //TODO : Implementation of Rest Services
-    fetch("http://localhost:8000/suggestions")
+    fetch("http://localhost:8000/todoapi/v1/suggestions")
         .then(resp => resp.json())
+        .then(respJson => respJson.data)
         .then(jsonArray => jsonArray.forEach(data => todoSuggestions.push(data.content) && addItemInSuggestionsList(data.content)))
-        .catch(error => console.log(error));
+        .catch(error => {
+            console.log(error);
+            alert("Error in Connecting to Server");
+        });
 
-    fetch("http://localhost:8000/todo")
+    fetch("http://localhost:8000/todoapi/v1/todo")
         .then(resp => resp.json())
+        .then(respJson => respJson.data)
         .then(jsonArray => jsonArray.forEach(data => todoList.push(data) && addItemInDisplayList(data)))
         .catch(error => console.log(error));
 
@@ -70,12 +75,13 @@ function isItemExistsInSuggestions(todoItemName) {
 function addItem() {
     let itemInput = document.getElementById("todo-input");
     let todoItemName = itemInput.value.trim();
+    let initialTodoStatus = false;
     if (todoItemName.length !== 0) {
         if (isItemExistsInSuggestions(todoItemName) == false) {
             addNewSuggestion(todoItemName);
             todoSuggestions.push(todoItemName);
         }
-        addNewTodoItem(todoItemName);
+        addNewTodoItem(todoItemName, initialTodoStatus);
         itemInput.value = "";
     }
 }
@@ -295,9 +301,7 @@ function disableTextEditOption(textarea) {
 
 function toggleImageAndStrikeDataOfRowWithId(todoId) {
     for (let i = 0; i < todoList.length; i++) {
-        console.log(todoList[i], todoId, !todoList[i].checked);
         if (todoList[i].id == todoId) {
-            console.log("I AM");
             todoList[i].checked = !todoList[i].checked;
             updateContentOfItem(todoId, todoList[i].content, todoList[i].checked);
             break;
@@ -348,23 +352,33 @@ function addNewSuggestion(todoItemName) {
     // // empty the datalist each time
     // document.getElementById("todo-list-suggestions").innerHTML = "";
 
-    fetch("http://localhost:8000/suggestions", { method: 'post', body: JSON.stringify(jsonToAdd) })
+    fetch("http://localhost:8000/todoapi/v1/suggestions", { method: 'post', body: JSON.stringify(jsonToAdd) })
         .then(resp => resp.json())
+        .then(respJson => respJson.data)
         // .then(jsonArray => jsonArray.forEach(data => todoSuggestions.push(data.content) && addItemInSuggestionsList(data.content)))
-        .catch(err => console.log(err));
+        .then(() => addItemInSuggestionsList(todoItemName))
+        .catch(err => {
+            // removeItemFromSuggestionsList(todoItemName);
+            console.log(error);
+            alert("Error in Connecting to Server");
+        });
 
-    addItemInSuggestionsList(todoItemName);
+
 
 }
 
-function addNewTodoItem(todoItemName) {
-    let jsonToAdd = { "content": todoItemName };
+function addNewTodoItem(todoItemName, initialTodoStatus) {
+    let jsonToAdd = { "content": todoItemName, "checked": initialTodoStatus };
 
 
-    fetch("http://localhost:8000/todo", { method: 'post', body: JSON.stringify(jsonToAdd) })
+    fetch("http://localhost:8000/todoapi/v1/todo", { method: 'post', body: JSON.stringify(jsonToAdd) })
         .then(response => response.json())
+        .then(respJson => respJson.data)
         .then(data => addItemInDisplayList(data))
-        .catch(error => console.log(error));
+        .catch(error => {
+            console.log(error);
+            alert("Error in Connecting to Server");
+        });
 
 
 
@@ -374,14 +388,22 @@ function updateContentOfItem(todoId, todoItemUpdatedName, checkStatus) {
 
     let jsonToAdd = { "content": todoItemUpdatedName, "checked": checkStatus };
 
-    fetch("http://localhost:8000/todo/" + todoId, { method: 'put', body: JSON.stringify(jsonToAdd) })
+    fetch("http://localhost:8000/todoapi/v1/todo/" + todoId, { method: 'put', body: JSON.stringify(jsonToAdd) })
         .then(response => response.json())
-        .catch(error => console.log(error));
+        .then(respJson => respJson.data)
+        .catch(error => {
+            console.log(error);
+            alert("Error in Connecting to Server");
+        });
 
 }
 
 function deleteTodo(todoId) {
-    fetch("http://localhost:8000/todo/" + todoId, { method: 'delete' })
+    fetch("http://localhost:8000/todoapi/v1/todo/" + todoId, { method: 'delete' })
         .then(response => response.json())
-        .catch(error => console.log(error));
+        .then(respJson => respJson.data)
+        .catch(error => {
+            console.log(error);
+            alert("Error in Connecting to Server");
+        });
 }
