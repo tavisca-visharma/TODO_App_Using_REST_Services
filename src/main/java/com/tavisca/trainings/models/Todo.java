@@ -2,15 +2,13 @@ package com.tavisca.trainings.models;
 
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,10 +18,11 @@ import lombok.Setter;
 @Document
 public class Todo {
 
-	@Setter(AccessLevel.NONE)
+	@Transient
+	public static final String SEQUENCE_NAME = "todo_sequence";
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private long id;
 
 	@NotNull
 	@NotEmpty
@@ -37,12 +36,9 @@ public class Todo {
 	@NotEmpty
 	private String checked;
 
-	static int counter = 1;
-
 	@Builder
 	public Todo(String content, String checked) {
 		super();
-		this.id = counter++;
 		this.timeStamp = new Date().toString();
 		this.content = content;
 		this.checked = checked;

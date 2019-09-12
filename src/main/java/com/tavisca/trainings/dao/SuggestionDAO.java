@@ -10,6 +10,7 @@ import com.tavisca.trainings.exceptions.SuggestionAlreadyExistsException;
 import com.tavisca.trainings.exceptions.SuggestionDoesNotExistsException;
 import com.tavisca.trainings.models.Suggestion;
 import com.tavisca.trainings.repositories.SuggestionRepository;
+import com.tavisca.trainings.services.SequenceGeneratorService;
 
 @Component
 public class SuggestionDAO {
@@ -22,12 +23,16 @@ public class SuggestionDAO {
 
 	@Autowired
 	SuggestionRepository suggestionRepository;
+	
+	@Autowired
+	SequenceGeneratorService sequenceGeneratorService;
 
 	public List<Suggestion> getAll() {
 		return suggestionRepository.findAll();
 	}
 
 	public Suggestion add(Suggestion suggestion) throws SuggestionAlreadyExistsException {
+		suggestion.setId(sequenceGeneratorService.generateSequence(Suggestion.SEQUENCE_NAME));
 		if (suggestionRepository.findByContent(suggestion.getContent()).isPresent())
 			throw new SuggestionAlreadyExistsException("Suggestion Already Exists !!!");
 		return suggestionRepository.save(suggestion);

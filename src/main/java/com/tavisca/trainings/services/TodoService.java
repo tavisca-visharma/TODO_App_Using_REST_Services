@@ -40,11 +40,11 @@ public class TodoService {
 		return response.created("Todo Added Successfully", todoDAO.add(todo));
 	}
 
-	public Response updateTodo(int todoId, Todo todo) throws TodoDoesNotExistsException {
+	public Response updateTodo(long todoId, Todo todo) throws TodoDoesNotExistsException {
 		return response.ok("Todo Updated Successfully", todoDAO.updateById(todoId, todo));
 	}
 
-	public Response deleteTodo(int todoid) throws TodoDoesNotExistsException {
+	public Response deleteTodo(long todoid) throws TodoDoesNotExistsException {
 		return response.deleted("Todo Deleted Successfully", todoDAO.deleteById(todoid));
 	}
 

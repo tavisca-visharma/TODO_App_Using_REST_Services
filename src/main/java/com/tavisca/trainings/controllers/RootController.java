@@ -57,13 +57,13 @@ public class RootController {
 	}
 
 	@PutMapping("/todo/{id}")
-	public ResponseEntity<?> updateTodo(@PathVariable("id") int todoId, @Valid @RequestBody Todo updatedTodo)
+	public ResponseEntity<?> updateTodo(@PathVariable("id") long todoId, @Valid @RequestBody Todo updatedTodo)
 			throws TodoDoesNotExistsException {
 		return new ResponseEntity<>(todoService.updateTodo(todoId, updatedTodo), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/todo/{id}")
-	public ResponseEntity<?> deleteTodo(@PathVariable("id") int todoId) throws TodoDoesNotExistsException {
+	public ResponseEntity<?> deleteTodo(@PathVariable("id") long todoId) throws TodoDoesNotExistsException {
 		return new ResponseEntity<>(todoService.deleteTodo(todoId), HttpStatus.NO_CONTENT);
 	}
 

@@ -199,7 +199,7 @@ function createNameToAdd(item, todoItem) {
     itemDescription.value = todoItem.content;
     itemDescription.rows = 1;
     itemDescription.spellcheck = false;
-    if (todoItem.checked == true)
+    if (todoItem.checked === "true")
         itemDescription.style.textDecoration = "line-through red";
     else
         itemDescription.style.textDecoration = "none";
@@ -305,7 +305,7 @@ function toggleImageAndStrikeDataOfRowWithId(todoId) {
             if (todoList[i].checked === "false")
                 todoList[i].checked = "true";
             else
-                todoList[i].checked = true;
+                todoList[i].checked = "false";
             updateContentOfItem(todoId, todoList[i].content, todoList[i].checked);
             break;
         }
@@ -402,7 +402,6 @@ function updateContentOfItem(todoId, todoItemUpdatedName, checkStatus) {
         checkStatus = "false";
 
     let jsonToAdd = { "content": todoItemUpdatedName, "checked": checkStatus };
-    console.log(checkStatus + " --- ")
 
     fetch("http://localhost:8000/todoapi/v1/todo/" + todoId, { method: 'put', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify(jsonToAdd) })
         .then(response => response.json())

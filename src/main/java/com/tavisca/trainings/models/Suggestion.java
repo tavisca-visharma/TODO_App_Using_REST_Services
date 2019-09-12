@@ -1,12 +1,12 @@
 package com.tavisca.trainings.models;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +18,11 @@ import lombok.Setter;
 @Document
 public class Suggestion {
 
-	@Setter(AccessLevel.NONE)
-	@Id
-	private int suggestionId;
+	@Transient
+	public static final String SEQUENCE_NAME = "suggestion_sequence";
 
-	static int counter = 1;
+	@Id
+	private long id;
 
 	@NotEmpty
 	@NotNull
@@ -31,7 +31,6 @@ public class Suggestion {
 	@Builder
 	public Suggestion(String content) {
 		super();
-		this.suggestionId = counter++;
 		this.content = content;
 	}
 }

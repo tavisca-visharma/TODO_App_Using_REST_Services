@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.tavisca.trainings.models.Todo;
 
 @Repository
-public interface TodoRepository extends MongoRepository<Todo, Integer>{
+public interface TodoRepository extends MongoRepository<Todo, Long>{
 
 }
