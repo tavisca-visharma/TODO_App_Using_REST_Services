@@ -9,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.w3c.dom.css.Counter;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,15 +25,18 @@ public class Todo {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String timeStamp;
-	
-	@NotNull @NotEmpty
+
+	@NotNull
+	@NotEmpty
 	private String content;
-	
-	@NotNull @NotEmpty
+
+	@NotNull
+	@NotEmpty
 	private String checked;
-	
+
 	static int counter = 1;
 
 	@Builder

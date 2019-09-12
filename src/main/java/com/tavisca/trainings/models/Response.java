@@ -1,8 +1,5 @@
 package com.tavisca.trainings.models;
 
-
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -28,17 +25,26 @@ public class Response {
 		this.data = data;
 	}
 
-	public Response ok(String message, Object data) {
-		this.statusCode = HttpStatus.OK.toString();
+	private void responseContent(String message, Object data) {
 		this.message = message;
 		this.data = data;
+	}
+
+	public Response ok(String message, Object data) {
+		this.responseContent(message, data);
+		this.statusCode = HttpStatus.OK.toString();
 		return this;
 	}
-	
-	public Response badRequest(String message, Object data) {
-		this.statusCode = HttpStatus.BAD_REQUEST.toString();
-		this.message = message;
-		this.data = data;
+
+	public Response created(String message, Object data) {
+		this.responseContent(message, data);
+		this.statusCode = HttpStatus.CREATED.toString();
+		return this;
+	}
+
+	public Response deleted(String message, Object data) {
+		this.responseContent(message, data);
+		this.statusCode = HttpStatus.NO_CONTENT.toString();
 		return this;
 	}
 
