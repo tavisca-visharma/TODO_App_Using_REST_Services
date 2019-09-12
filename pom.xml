@@ -13,7 +13,9 @@
 	<artifactId>TODO_Rest_Api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TODO_Rest_Api</name>
-	<description>Spring Boot Project for TODO Application using REST Services</description>
+	<description>Spring Boot Project for TODO Application using REST
+		Services</description>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>12</java.version>
@@ -43,6 +45,39 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20080701</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 
