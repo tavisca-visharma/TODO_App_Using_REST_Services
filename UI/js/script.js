@@ -42,16 +42,16 @@ function makeTodoListSuggetions() {
     // }
 
     //TODO : Implementation of Rest Services
-    fetch("http://localhost:8000/todoapi/v1/suggestions")
+    fetch("http://localhost:8000/todoapi/v1/suggestions/")
         .then(resp => resp.json())
         .then(respJson => respJson.data)
         .then(jsonArray => jsonArray.forEach(data => todoSuggestions.push(data.content) && addItemInSuggestionsList(data.content)))
         .catch(error => {
             console.log(error);
-            alert("Error in Connecting to Server");
+            // alert("Error in Connecting to Server");
         });
 
-    fetch("http://localhost:8000/todoapi/v1/todo")
+    fetch("http://localhost:8000/todoapi/v1/todo/")
         .then(resp => resp.json())
         .then(respJson => respJson.data)
         .then(jsonArray => jsonArray.forEach(data => todoList.push(data) && addItemInDisplayList(data)))
@@ -164,7 +164,7 @@ function createUncheckedCheckboxImage(item, todo) {
     image.src = "images/uncheck.png";
     image.width = "20";
     image.height = "20";
-    if (todo.checked == false) {
+    if (todo.checked === "false") {
         image.style.display = "";
     } else {
         image.style.display = "none";
@@ -182,7 +182,7 @@ function createCheckedCheckboxImage(itemdata, todo) {
     image.width = "20";
     image.height = "20";
     image.className = "images";
-    if (todo.checked == true) {
+    if (todo.checked === "true") {
         image.style.display = "";
     } else {
         image.style.display = "none";
@@ -302,7 +302,10 @@ function disableTextEditOption(textarea) {
 function toggleImageAndStrikeDataOfRowWithId(todoId) {
     for (let i = 0; i < todoList.length; i++) {
         if (todoList[i].id == todoId) {
-            todoList[i].checked = !todoList[i].checked;
+            if (todoList[i].checked === "false")
+                todoList[i].checked = "true";
+            else
+                todoList[i].checked = true;
             updateContentOfItem(todoId, todoList[i].content, todoList[i].checked);
             break;
         }
@@ -352,15 +355,16 @@ function addNewSuggestion(todoItemName) {
     // // empty the datalist each time
     // document.getElementById("todo-list-suggestions").innerHTML = "";
 
-    fetch("http://localhost:8000/todoapi/v1/suggestions", { method: 'post', body: JSON.stringify(jsonToAdd) })
-        .then(resp => resp.json())
+    console.log(JSON.stringify(jsonToAdd));
+    fetch("http://localhost:8000/todoapi/v1/suggestions/", { method: 'post', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify(jsonToAdd) })
+        .then(resp => { console.log(resp); return resp.json() })
         .then(respJson => respJson.data)
         // .then(jsonArray => jsonArray.forEach(data => todoSuggestions.push(data.content) && addItemInSuggestionsList(data.content)))
         .then(() => addItemInSuggestionsList(todoItemName))
         .catch(err => {
             // removeItemFromSuggestionsList(todoItemName);
             console.log(error);
-            alert("Error in Connecting to Server");
+            // alert("Error in Connecting to Server");
         });
 
 
@@ -371,13 +375,13 @@ function addNewTodoItem(todoItemName, initialTodoStatus) {
     let jsonToAdd = { "content": todoItemName, "checked": initialTodoStatus };
 
 
-    fetch("http://localhost:8000/todoapi/v1/todo", { method: 'post', body: JSON.stringify(jsonToAdd) })
+    fetch("http://localhost:8000/todoapi/v1/todo/", { method: 'post', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify(jsonToAdd) })
         .then(response => response.json())
         .then(respJson => respJson.data)
         .then(data => addItemInDisplayList(data))
         .catch(error => {
             console.log(error);
-            alert("Error in Connecting to Server");
+            // alert("Error in Connecting to Server");
         });
 
 
@@ -386,14 +390,26 @@ function addNewTodoItem(todoItemName, initialTodoStatus) {
 
 function updateContentOfItem(todoId, todoItemUpdatedName, checkStatus) {
 
-    let jsonToAdd = { "content": todoItemUpdatedName, "checked": checkStatus };
+    if (checkStatus === "") {
+        for (let i = 0; i < todoList.length; i++) {
+            if (todoList[i].id == todoId) {
+                checkStatus = todoList[i].checked;
+                break;
+            }
+        }
+    }
+    if (checkStatus === "")
+        checkStatus = "false";
 
-    fetch("http://localhost:8000/todoapi/v1/todo/" + todoId, { method: 'put', body: JSON.stringify(jsonToAdd) })
+    let jsonToAdd = { "content": todoItemUpdatedName, "checked": checkStatus };
+    console.log(checkStatus + " --- ")
+
+    fetch("http://localhost:8000/todoapi/v1/todo/" + todoId, { method: 'put', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify(jsonToAdd) })
         .then(response => response.json())
         .then(respJson => respJson.data)
         .catch(error => {
             console.log(error);
-            alert("Error in Connecting to Server");
+            // alert("Error in Connecting to Server");
         });
 
 }
@@ -404,6 +420,6 @@ function deleteTodo(todoId) {
         .then(respJson => respJson.data)
         .catch(error => {
             console.log(error);
-            alert("Error in Connecting to Server");
+            // alert("Error in Connecting to Server");
         });
 }

@@ -1,70 +1,107 @@
 package com.tavisca.trainings.services;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.tavisca.trainings.dao.SuggestionDAO;
+import com.tavisca.trainings.dao.TodoDAO;
 import com.tavisca.trainings.exceptions.BooleanParseException;
 import com.tavisca.trainings.models.Response;
 import com.tavisca.trainings.models.Suggestion;
 import com.tavisca.trainings.models.Todo;
+import com.tavisca.trainings.repositories.TodoRepository;
 
 @Service
 public class TodoService {
 
-	List<Todo> todoList;
-	List<Suggestion> suggestions;
-	JSONObject jsonObject = null;
-
-	public TodoService() {
-		todoList = new ArrayList<Todo>();
-		suggestions = new ArrayList<Suggestion>();
-		addInitialSuggestions();
-		addInitialTodos();
+	@Autowired
+	SuggestionDAO suggestionDAO;
+	
+	@Autowired
+	TodoDAO todoDAO;
+	
+	@Autowired
+	Response response;
+	
+	
+	
+	public Response getAllTodo() {
+		return response.ok("All Todos Returned Successfully", todoDAO.getAll());
 	}
-
-	public void addInitialTodos() {
-		todoList.add(new Todo(new Date().toString(), "Go for Lunch @ 1:30 PM", false));
-		todoList.add(new Todo(new Date().toString(), "Go for Dinner @ 7:30 PM", false));
-		todoList.add(new Todo(new Date().toString(), "Complete TODO APP using Rest Api", true));
+	
+	public Response getAllSuggestions() {
+		return response.ok("All Suggestions Returned Successfully", suggestionDAO.getAll());
 	}
-
-	public void addInitialSuggestions() {
-		suggestions.add(new Suggestion("First Suggestion"));
-		suggestions.add(new Suggestion("Second Suggestion"));
-		suggestions.add(new Suggestion("Third Suggestion"));
+	
+	public Response addSuggestion(Suggestion suggestion) {
+		return response.ok("Suggestion Added Successfully", suggestionDAO.add(suggestion));
 	}
+	
+	public Response addTodo(Todo todo) {
+		return response.ok("Todo Added Successfully", todoDAO.add(todo));
+	}
+	
+	public Response updateTodo(int todoId, Todo todo) {
+		return response.ok("Todo Updated Successfully", todoDAO.updateById(todoId,todo));
+	}
+	
+	public Response deleteTodo(int todoid) {
+		return response.ok("Todo Deleted Successfully", todoDAO.deleteById(todoid));
+	}
+	
+}
 
-	public void addSuggention(String content) throws NullPointerException {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*JSONObject jsonObject = null;
+
+
+	public Response addSuggention(String content) throws NullPointerException {
 		if (content.isBlank() || content.isEmpty() || content == null || content.equals("null"))
 			throw new NullPointerException("Suggestion Content Cannot be Blank or Null");
-		suggestions.add(new Suggestion(content));
+		Suggestion newSuggestion = Suggestion.builder().content(content).build();
+		suggestionDAO.add(newSuggestion);
+		return sendResponse(HttpStatus.OK, "Added Suggestion Successfully", newSuggestion);
 	}
 
 	public Response getAllSuggestions() {
-		return sendResponse(HttpStatus.OK, "All Suggestions Are Returned", suggestions);
+		return sendResponse(HttpStatus.OK, "All Suggestions Are Returned", suggestionDAO.getAll());
 	}
 
 	public Response getAllTodo() {
-		return sendResponse(HttpStatus.OK, "All Todos Are Returned", todoList);
+		return sendResponse(HttpStatus.OK, "All Todos Are Returned", todoDAO.getAll());
 	}
 
-	public void addTodo(String content, String todoCheckStatus) throws BooleanParseException {
+	public Response addTodo(String content, String todoCheckStatus) throws BooleanParseException {
+		Todo newTodo;
 		if (content.isBlank() || content.isEmpty() || content == null || content.equals("null"))
 			throw new NullPointerException("Todo Task Content Cannot be Blank or Null");
-		else if (todoCheckStatus.equalsIgnoreCase("true") || todoCheckStatus.equalsIgnoreCase("false"))
-			todoList.add(new Todo(new Date().toString(), content, Boolean.parseBoolean(todoCheckStatus)));
+		else if (todoCheckStatus.equalsIgnoreCase("true") || todoCheckStatus.equalsIgnoreCase("false")) {
+			newTodo = new Todo(new Date().toString(), content, Boolean.parseBoolean(todoCheckStatus));
+			todoDAO.add(newTodo);
+		}
 		else
 			throw new BooleanParseException("Passed argument should be \'Boolean\' but found \'String\'");
-	}
-
-	public Response getNewlyAddedTodo() {
-		return sendResponse(HttpStatus.OK, "Added Todo Successfully", todoList.get(todoList.size() - 1));
+		return sendResponse(HttpStatus.OK, "Added Todo Successfully", newTodo);
 	}
 
 	public Response getUpdatedTodo(int todoId, String content, String todoCheckStatus) {
@@ -73,17 +110,7 @@ public class TodoService {
 	}
 
 	private Todo updateTodoWithId(int todoId, String content, String todoCheckStatus) {
-
-		for (int i = 0; i < todoList.size(); i++) {
-			if (todoList.get(i).getId() == todoId) {
-				todoList.get(i).setContent(content);
-				if (!todoCheckStatus.equals("")) {
-					todoList.get(i).setChecked(Boolean.parseBoolean(todoCheckStatus));
-				}
-				return todoList.get(i);
-			}
-		}
-		return null;
+		
 	}
 
 	public Response getDeletedTodo(int todoId) {
@@ -123,7 +150,7 @@ public class TodoService {
 
 			String todoContent = jsonObject.getString("content");
 			String todoCheckStatus = jsonObject.getString("checked");
-			this.addTodo(todoContent, todoCheckStatus);
+			return this.addTodo(todoContent, todoCheckStatus);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -134,9 +161,6 @@ public class TodoService {
 		} catch (NullPointerException e) {
 			return sendResponse(HttpStatus.BAD_REQUEST, e.getMessage(), jsonString);
 		}
-
-		return getNewlyAddedTodo();
-
 	}
 
 	public Response addNewSuggestion(String jsonString) {
@@ -146,7 +170,7 @@ public class TodoService {
 				throw new NullPointerException("Passed Json Cannot be Null or Empty");
 			jsonObject = new JSONObject(jsonString);
 
-			this.addSuggention(jsonObject.getString("content"));
+			return this.addSuggention(jsonObject.getString("content"));
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -156,13 +180,8 @@ public class TodoService {
 
 		}
 
-		return this.getNewlyAddedSuggestion();
-
 	}
 
-	public Response getNewlyAddedSuggestion() {
-		return sendResponse(HttpStatus.OK, "Suggestion Added Succesfully", suggestions.get(suggestions.size() - 1));
-	}
 
 	public Response sendResponse(HttpStatus statusCode, String message, Object data) {
 
@@ -170,8 +189,6 @@ public class TodoService {
 		return response;
 	}
 
-	public Response getBadRequest() {
-		return sendResponse(HttpStatus.BAD_REQUEST, "Bad Request", "Error");
-	}
 
 }
+*/
