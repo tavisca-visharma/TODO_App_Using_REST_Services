@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import com.tavisca.trainings.exceptions.SuggestionAlreadyExistsException;
 import com.tavisca.trainings.exceptions.SuggestionDoesNotExistsException;
@@ -15,7 +15,7 @@ import com.tavisca.trainings.models.Response;
 
 @ControllerAdvice
 @RestController
-public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
+public class DefaultExceptionHandler extends SimpleMappingExceptionResolver {
 
 	@ExceptionHandler(SuggestionAlreadyExistsException.class)
 	public ResponseEntity<?> handleSuggestionAlreadyExistsException(SuggestionAlreadyExistsException e) {

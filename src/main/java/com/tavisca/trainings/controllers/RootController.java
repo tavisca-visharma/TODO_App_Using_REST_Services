@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tavisca.trainings.exceptions.SuggestionAlreadyExistsException;
 import com.tavisca.trainings.exceptions.TodoAlreadyExistsException;
 import com.tavisca.trainings.exceptions.TodoDoesNotExistsException;
-import com.tavisca.trainings.models.Response;
 import com.tavisca.trainings.models.Suggestion;
 import com.tavisca.trainings.models.Todo;
 import com.tavisca.trainings.services.TodoService;
@@ -67,13 +65,6 @@ public class RootController {
 	@DeleteMapping("/todo/{id}")
 	public ResponseEntity<?> deleteTodo(@PathVariable("id") long todoId) throws TodoDoesNotExistsException {
 		return new ResponseEntity<>(todoService.deleteTodo(todoId), HttpStatus.NO_CONTENT);
-	}
-	
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> handleOtherException(Exception e) {
-		Response response = Response.builder().statusCode(HttpStatus.BAD_REQUEST.toString()).message(e.getMessage())
-				.data("Error").build();
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 }
